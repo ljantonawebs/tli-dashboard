@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Long Investor — Asset Recommendations Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #f8fafc;
+      letter-spacing: -0.5px;
+    }
+    .header .subtitle {
+      color: #94a3b8;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+    .header .date {
+      color: #64748b;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    /* Summary cards */
+    .summary-row {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .summary-card {
+      background: #1e2433;
+      border: 1px solid #2d3748;
+      border-radius: 10px;
+      padding: 16px 24px;
+      text-align: center;
+      min-width: 130px;
+    }
+    .summary-card .num {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .summary-card .label {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .num-buy   { color: #22c55e; }
+    .num-wait  { color: #94a3b8; }
+    .num-total { color: #60a5fa; }
+
+    /* ── Refresh toolbar ── */
+    .refresh-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #1a2035;
+      border: 1px solid #2d3748;
+      border-radius: 10px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+    }
+    .refresh-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .status-dot.loading { background: #f59e0b; animation: pulse 1s infinite; }
+    .status-dot.ok      { background: #22c55e; }
+    .status-dot.error   { background: #f87171; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+    #status-text { font-size: 13px; color: #94a3b8; }
+
+    .refresh-center {
+      font-size: 12px;
+      color: #475569;
+      text-align: center;
+    }
+    .refresh-center span { color: #64748b; }
+    #countdown { color: #60a5fa; font-family: 'SF Mono', monospace; }
+
+    .refresh-btn {
+      background: #1e3a5f;
+      color: #60a5fa;
+      border: 1px solid #1d4ed8;
+      border-radius: 8px;
+      padding: 7px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .refresh-btn:hover:not(:disabled) {
+      background: #1e40af;
+      color: #93c5fd;
+    }
+    .refresh-btn:active:not(:disabled) { transform: scale(0.97); }
+    .refresh-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .refresh-btn.spinning { animation: spin 1s linear infinite; }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Table wrapper */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid #2d3748;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead tr { background: #1a2035; }
+    thead th {
+      padding: 12px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      white-space: nowrap;
+      border-bottom: 1px solid #2d3748;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #1e2433;
+      transition: background 0.15s;
+    }
+    tbody tr:hover { background: #1a2232; }
+    tbody tr:last-child { border-bottom: none; }
+
+    td {
+      padding: 11px 14px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    /* Ticker column */
+    .ticker {
+      font-weight: 700;
+      font-size: 14px;
+      color: #f1f5f9;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+    .company {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* TLI Sentiment badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-buy-now   { background: #14532d; color: #4ade80; border: 1px solid #166534; }
+    .badge-wait-buy  { background: #1e3a5f; color: #60a5fa; border: 1px solid #1d4ed8; }
+    .badge-wait-sell { background: #431407; color: #fb923c; border: 1px solid #c2410c; }
+    .badge-ignore    { background: #1f2937; color: #6b7280; border: 1px solid #374151; }
+
+    /* Price columns */
+    .price           { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; }
+    .price-current   { color: #e2e8f0; font-weight: 600; }
+    .price-target    { color: #94a3b8; }
+    .price-none      { color: #374151; }
+
+    .price-cell      { display: flex; flex-direction: column; gap: 2px; }
+    .live-price      { color: #e2e8f0; font-weight: 600; font-family: 'SF Mono', monospace; }
+    .live-chg        { font-size: 11px; font-family: 'SF Mono', monospace; color: #475569; }
+    .live-chg.up     { color: #4ade80; }
+    .live-chg.dn     { color: #f87171; }
+
+    /* flash animation when price updates */
+    @keyframes flash-green { 0%,100%{background:transparent} 30%{background:#14532d40} }
+    @keyframes flash-red   { 0%,100%{background:transparent} 30%{background:#43140740} }
+    .flash-up { animation: flash-green 0.8s ease; }
+    .flash-dn { animation: flash-red   0.8s ease; }
+
+    /* Analyst column */
+    .analyst-strong-buy { color: #4ade80; font-weight: 600; }
+    .analyst-buy        { color: #86efac; font-weight: 600; }
+    .analyst-mod-buy    { color: #bef264; font-weight: 600; }
+    .analyst-hold       { color: #fbbf24; font-weight: 600; }
+    .analyst-sell       { color: #f87171; font-weight: 600; }
+    .analyst-bullish    { color: #34d399; font-weight: 600; }
+    .analyst-none       { color: #374151; }
+
+    /* Overall Recommendation */
+    .rec-buy {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #14532d; color: #4ade80; border: 1px solid #166534;
+      border-radius: 6px; padding: 5px 14px;
+      font-size: 13px; font-weight: 800; letter-spacing: 0.5px;
+    }
+    .rec-wait {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #1e2433; color: #64748b; border: 1px solid #2d3748;
+      border-radius: 6px; padding: 5px 14px;
+      font-size: 13px; font-weight: 700;
+    }
+
+    /* Section headers */
+    .section-header td {
+      background: #1a2035; color: #475569;
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      padding: 8px 14px;
+      border-bottom: 1px solid #2d3748;
+    }
+
+    /* BUY highlight rows */
+    tr.row-buy               { background: #0a1f12; }
+    tr.row-buy:hover         { background: #0d2918; }
+
+    .footnote {
+      text-align: center; margin-top: 20px;
+      font-size: 11px; color: #475569; line-height: 1.6;
+    }
+    .footnote strong { color: #64748b; }
+
+    .dot-buy  { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; display: inline-block; }
+    .dot-wait { width: 7px; height: 7px; border-radius: 50%; background: #475569; display: inline-block; }
+
+    @media (max-width: 900px) {
+      body { padding: 12px; }
+      .header h1 { font-size: 20px; }
+      .refresh-center { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 The Long Investor — Asset Recommendations</h1>
+  <div class="subtitle">Elliott Wave analysis from emails · Live market prices · Wall Street analyst consensus</div>
+  <div class="date">Analysis: June 30, 2026 &nbsp;|&nbsp; Prices refresh automatically every 12 hours</div>
+</div>
+
+<!-- Summary Cards -->
+<div class="summary-row">
+  <div class="summary-card">
+    <div class="num num-total">27</div>
+    <div class="label">Assets Tracked</div>
+  </div>
+  <div class="summary-card">
+    <div class="num num-buy">4</div>
+    <div class="label">BUY Now</div>
+  </div>
+  <div class="summary-card">
+    <div class="num num-wait">23</div>
+    <div class="label">WAIT</div>
+  </div>
+  <div class="summary-card">
+    <div class="num" style="color:#f59e0b">20</div>
+    <div class="label">Emails Analysed</div>
+  </div>
+</div>
+
+<!-- ── Refresh Toolbar ── -->
+<div class="refresh-bar">
+  <div class="refresh-left">
+    <span id="status-dot" class="status-dot loading"></span>
+    <span id="status-text">Fetching live prices…</span>
+  </div>
+  <div class="refresh-center">
+    <span id="last-updated">—</span>
+    &nbsp;·&nbsp; Next auto-refresh in <span id="countdown">12:00:00</span>
+  </div>
+  <button id="refresh-btn" class="refresh-btn" onclick="refreshPrices()">
+    ⟳ &nbsp;Refresh Now
+  </button>
+</div>
+
+<!-- Main Table -->
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Asset</th>
+      <th>TLI Sentiment</th>
+      <th>TLI Entry Target</th>
+      <th>TLI Future Target</th>
+      <th>Live Price</th>
+      <th>Analyst Consensus</th>
+      <th>Analyst Avg Target</th>
+      <th>Overall Rec</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- ── BUY NOW / ANALYSTS AGREE ── -->
+    <tr><td colspan="9" class="section-header">🟢 &nbsp;BUY — TLI "Buy Now" + Analysts Concur</td></tr>
+
+    <tr class="row-buy">
+      <td class="price-target">1</td>
+      <td><div class="ticker">$BABA</div><div class="company">Alibaba Group · NYSE ADR</div></td>
+      <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td class="price price-target">~$95 (current)</td>
+      <td class="price price-target">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-BABA">$94.86</span><span class="live-chg" id="chg-BABA"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$190.23 <span style="color:#4ade80;font-size:11px">(+100%)</span></td>
+      <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
+    </tr>
+
+    <tr class="row-buy">
+      <td class="price-target">2</td>
+      <td><div class="ticker">$BIDU</div><div class="company">Baidu Inc · NASDAQ ADR</div></td>
+      <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td class="price price-target">$105–$107 (load boat)</td>
+      <td class="price price-target">$112+ (200 WMA)</td>
+      <td><div class="price-cell"><span class="live-price" id="price-BIDU">$112.02</span><span class="live-chg" id="chg-BIDU"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$154.38 <span style="color:#4ade80;font-size:11px">(+38%)</span></td>
+      <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
+    </tr>
+
+    <tr class="row-buy">
+      <td class="price-target">3</td>
+      <td><div class="ticker">$ZETA</div><div class="company">Zeta Global Holdings · NYSE</div></td>
+      <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td class="price price-target">$18.83 (0.618 Fib)</td>
+      <td class="price price-target">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-ZETA">$19.93</span><span class="live-chg" id="chg-ZETA"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$28.31 <span style="color:#4ade80;font-size:11px">(+42%)</span></td>
+      <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
+    </tr>
+
+    <tr class="row-buy">
+      <td class="price-target">4</td>
+      <td><div class="ticker">$WYFI</div><div class="company">WhiteFiber Inc · NASDAQ</div></td>
+      <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td class="price price-target">$33.60 (BUY ALERT)</td>
+      <td class="price price-target">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-WYFI">$36.00</span><span class="live-chg" id="chg-WYFI"></span></div></td>
+      <td class="analyst-buy">Buy</td>
+      <td class="price price-target">$34.60 <span style="color:#fbbf24;font-size:11px">(-4%)</span></td>
+      <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
+    </tr>
+
+    <!-- ── BUY NOW / ANALYSTS DISAGREE ── -->
+    <tr><td colspan="9" class="section-header">🟡 &nbsp;TLI "Buy Now" — Analyst Caution (WAIT)</td></tr>
+
+    <tr>
+      <td class="price-target">5</td>
+      <td><div class="ticker">$EBAY</div><div class="company">eBay Inc · NASDAQ</div></td>
+      <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td class="price price-target">~$110 (current)</td>
+      <td class="price price-target">$180</td>
+      <td><div class="price-cell"><span class="live-price" id="price-EBAY">$110.80</span><span class="live-chg" id="chg-EBAY"></span></div></td>
+      <td class="analyst-hold">Hold</td>
+      <td class="price price-target">$108.13 <span style="color:#f87171;font-size:11px">(-2%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <!-- ── WAIT TO BUY ── -->
+    <tr><td colspan="9" class="section-header">🔵 &nbsp;WAIT TO BUY — Watching for Entry Signals</td></tr>
+
+    <tr>
+      <td class="price-target">6</td>
+      <td><div class="ticker">$AAPL</div><div class="company">Apple Inc · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">$260 (50 WMA)</td>
+      <td class="price price-target">Wave 5 higher</td>
+      <td><div class="price-cell"><span class="live-price" id="price-AAPL">$280.93</span><span class="live-chg" id="chg-AAPL"></span></div></td>
+      <td class="analyst-buy">Buy</td>
+      <td class="price price-target">$315.09 <span style="color:#4ade80;font-size:11px">(+12%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">7</td>
+      <td><div class="ticker">$ABCL</div><div class="company">AbCellera Biologics · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-none">—</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-ABCL">$8.49</span><span class="live-chg" id="chg-ABCL"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$8.40 <span style="color:#fbbf24;font-size:11px">(-1%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">8</td>
+      <td><div class="ticker">$ADUR</div><div class="company">Aduro Clean Technologies · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-none">—</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-ADUR">$15.26</span><span class="live-chg" id="chg-ADUR"></span></div></td>
+      <td class="analyst-mod-buy">Moderate Buy</td>
+      <td class="price price-target">$29.00 <span style="color:#4ade80;font-size:11px">(+90%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">9</td>
+      <td><div class="ticker">$AMD</div><div class="company">Advanced Micro Devices · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">$521 (1.618 Fib)</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-AMD">$538.59</span><span class="live-chg" id="chg-AMD"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$500.40 <span style="color:#f87171;font-size:11px">(-7%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">10</td>
+      <td><div class="ticker">$AMZN</div><div class="company">Amazon.com Inc · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">$231 (50 WMA)</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-AMZN">$240.45</span><span class="live-chg" id="chg-AMZN"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$312.99 <span style="color:#4ade80;font-size:11px">(+30%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">11</td>
+      <td><div class="ticker">$ASTS</div><div class="company">AST SpaceMobile · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">$69 (TLI add point)</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-ASTS">$88.14</span><span class="live-chg" id="chg-ASTS"></span></div></td>
+      <td class="analyst-hold">Hold</td>
+      <td class="price price-target">$81.47 <span style="color:#f87171;font-size:11px">(-8%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">12</td>
+      <td><div class="ticker">$BTC</div><div class="company">Bitcoin · Cryptocurrency</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">At/below 200 WMA</td>
+      <td class="price price-target">Long-term bullish</td>
+      <td><div class="price-cell"><span class="live-price" id="price-BTC">$59,188</span><span class="live-chg" id="chg-BTC"></span></div></td>
+      <td class="analyst-bullish">Bullish</td>
+      <td class="price price-target">$100K–$180K</td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">13</td>
+      <td><div class="ticker">$GOOG</div><div class="company">Alphabet Inc Class C · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">$351 (2.618 Fib) ⚡</td>
+      <td class="price price-target">$453 (3.618 Fib)</td>
+      <td><div class="price-cell"><span class="live-price" id="price-GOOG">$351.00</span><span class="live-chg" id="chg-GOOG"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$426.62 <span style="color:#4ade80;font-size:11px">(+25%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">14</td>
+      <td><div class="ticker">$GRRR</div><div class="company">Gorilla Technology · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-none">—</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-GRRR">$18.80</span><span class="live-chg" id="chg-GRRR"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$36.67 <span style="color:#4ade80;font-size:11px">(+95%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">15</td>
+      <td><div class="ticker">$HIMS</div><div class="company">Hims &amp; Hers Health · NYSE</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-none">—</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-HIMS">$32.81</span><span class="live-chg" id="chg-HIMS"></span></div></td>
+      <td class="analyst-hold">Hold</td>
+      <td class="price price-target">$27.32 <span style="color:#f87171;font-size:11px">(-17%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">16</td>
+      <td><div class="ticker">$MSFT</div><div class="company">Microsoft Corp · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">$344 (0.5 Fib, Wave C)</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-MSFT">$370.24</span><span class="live-chg" id="chg-MSFT"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$561.11 <span style="color:#4ade80;font-size:11px">(+52%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">17</td>
+      <td><div class="ticker">$NKE</div><div class="company">Nike Inc Class B · NYSE</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-none">—</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-NKE">$41.51</span><span class="live-chg" id="chg-NKE"></span></div></td>
+      <td class="analyst-buy">Buy</td>
+      <td class="price price-target">$55.38 <span style="color:#4ade80;font-size:11px">(+33%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">18</td>
+      <td><div class="ticker">$OSCR</div><div class="company">Oscar Health Inc · NYSE</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">Below $30 resistance</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-OSCR">$29.38</span><span class="live-chg" id="chg-OSCR"></span></div></td>
+      <td class="analyst-hold">Hold</td>
+      <td class="price price-target">$22.60 <span style="color:#f87171;font-size:11px">(-23%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">19</td>
+      <td><div class="ticker">$SE</div><div class="company">Sea Limited · NYSE ADR</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">Around 200 WMA</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-SE">$92.30</span><span class="live-chg" id="chg-SE"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$140.50 <span style="color:#4ade80;font-size:11px">(+52%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">20</td>
+      <td><div class="ticker">$SHOP</div><div class="company">Shopify Inc Class A · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">$113 (0.618 Fib)</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-SHOP">$114.25</span><span class="live-chg" id="chg-SHOP"></span></div></td>
+      <td class="analyst-buy">Buy</td>
+      <td class="price price-target">$148.22 <span style="color:#4ade80;font-size:11px">(+30%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">21</td>
+      <td><div class="ticker">$SIDU</div><div class="company">Sidus Space Inc · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">$2.44 (0.618 Fib)</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-SIDU">$2.87</span><span class="live-chg" id="chg-SIDU"></span></div></td>
+      <td class="analyst-none">No Coverage</td>
+      <td class="price price-none">—</td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">22</td>
+      <td><div class="ticker">$TSLA</div><div class="company">Tesla Inc · NASDAQ</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">$402 (50 WMA)</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-TSLA">$407.77</span><span class="live-chg" id="chg-TSLA"></span></div></td>
+      <td class="analyst-buy">Buy</td>
+      <td class="price price-target">$421.16 <span style="color:#4ade80;font-size:11px">(+3%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">23</td>
+      <td><div class="ticker">$UNH</div><div class="company">UnitedHealth Group · NYSE</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-none">—</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-UNH">$419.82</span><span class="live-chg" id="chg-UNH"></span></div></td>
+      <td class="analyst-buy">Buy</td>
+      <td class="price price-target">$411.31 <span style="color:#f87171;font-size:11px">(-2%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">24</td>
+      <td><div class="ticker">$V</div><div class="company">Visa Inc Class A · NYSE</div></td>
+      <td><span class="badge badge-wait-buy">Wait to Buy</span></td>
+      <td class="price price-target">~$300 (0.38 Fib)</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-V">$342.52</span><span class="live-chg" id="chg-V"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$398.83 <span style="color:#4ade80;font-size:11px">(+16%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <!-- ── WAIT TO SELL ── -->
+    <tr><td colspan="9" class="section-header">🟠 &nbsp;WAIT TO SELL — Near or At TLI Price Target</td></tr>
+
+    <tr>
+      <td class="price-target">25</td>
+      <td><div class="ticker">$DCTH</div><div class="company">Delcath Systems · NASDAQ</div></td>
+      <td><span class="badge badge-wait-sell">Wait to Sell</span></td>
+      <td class="price price-none">—</td>
+      <td class="price price-target">1.618 Fib (Wave 3)</td>
+      <td><div class="price-cell"><span class="live-price" id="price-DCTH">$12.95</span><span class="live-chg" id="chg-DCTH"></span></div></td>
+      <td class="analyst-strong-buy">Strong Buy</td>
+      <td class="price price-target">$22.00 <span style="color:#4ade80;font-size:11px">(+70%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <tr>
+      <td class="price-target">26</td>
+      <td><div class="ticker">$PLTR</div><div class="company">Palantir Technologies · NASDAQ</div></td>
+      <td><span class="badge badge-wait-sell">Wait to Sell</span></td>
+      <td class="price price-target">$106 (9-mo target hit)</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-PLTR">$116.26</span><span class="live-chg" id="chg-PLTR"></span></div></td>
+      <td class="analyst-buy">Buy</td>
+      <td class="price price-target">$182.75 <span style="color:#4ade80;font-size:11px">(+57%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+    <!-- ── IGNORE ── -->
+    <tr><td colspan="9" class="section-header">⚫ &nbsp;IGNORE — No actionable signal at this time</td></tr>
+
+    <tr>
+      <td class="price-target">27</td>
+      <td><div class="ticker">$NIO</div><div class="company">NIO Inc · NYSE ADR</div></td>
+      <td><span class="badge badge-ignore">Ignore for Now</span></td>
+      <td class="price price-none">—</td>
+      <td class="price price-none">—</td>
+      <td><div class="price-cell"><span class="live-price" id="price-NIO">$4.94</span><span class="live-chg" id="chg-NIO"></span></div></td>
+      <td class="analyst-buy">Buy</td>
+      <td class="price price-target">$7.23 <span style="color:#4ade80;font-size:11px">(+46%)</span></td>
+      <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<!-- Footnotes -->
+<div class="footnote">
+  <p>
+    <strong>Overall Recommendation Logic:</strong> &nbsp;
+    <span class="rec-buy" style="font-size:11px;padding:3px 10px;"><span class="dot-buy"></span>BUY</span>
+    &nbsp;= TLI "Buy Now" <em>AND</em> Analyst consensus is Buy or Strong Buy &nbsp;|&nbsp;
+    <span class="rec-wait" style="font-size:11px;padding:3px 10px;"><span class="dot-wait"></span>WAIT</span>
+    &nbsp;= Any other combination
+  </p>
+  <p style="margin-top:8px">
+    ⚡ &nbsp;<strong>$GOOG alert:</strong> Price is at TLI's $351 entry level (2.618 Fib) — watching for reclaim confirmation toward $453 target.
+  </p>
+  <p style="margin-top:6px">
+    Live prices via Yahoo Finance · Analyst ratings from S&amp;P Global via StockAnalysis.com · Elliott Wave analysis from The Long Investor newsletter — last 20 days of emails.
+  </p>
+  <p style="margin-top:6px; color:#374151">
+    For informational purposes only. Not financial advice.
+  </p>
+</div>
+
+<!-- ═══════════════════════ JAVASCRIPT ═══════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── Config ── */
+  const REFRESH_MS = 12 * 60 * 60 * 1000; // 12 hours
+
+  // Yahoo Finance symbol → DOM id suffix
+  // All others use the Yahoo symbol as-is
+  const SYMBOL_TO_ID = { 'BTC-USD': 'BTC' };
+
+  // All tickers to fetch (Yahoo Finance symbols)
+  const SYMBOLS = [
+    'BABA','BIDU','ZETA','WYFI','EBAY',
+    'AAPL','ABCL','ADUR','AMD','AMZN','ASTS','BTC-USD',
+    'GOOG','GRRR','HIMS','MSFT','NKE','OSCR','SE','SHOP',
+    'SIDU','TSLA','UNH','V','DCTH','PLTR','NIO'
+  ];
+
+  /* ── State ── */
+  let nextRefreshAt = Date.now() + REFRESH_MS;
+  let autoRefreshTimer = null;
+  let countdownTimer  = null;
+
+  /* ── DOM refs ── */
+  const $dot       = () => document.getElementById('status-dot');
+  const $text      = () => document.getElementById('status-text');
+  const $updated   = () => document.getElementById('last-updated');
+  const $countdown = () => document.getElementById('countdown');
+  const $btn       = () => document.getElementById('refresh-btn');
+
+  /* ── Fetch prices ── */
+  async function fetchQuotes() {
+    const symbols = SYMBOLS.join(',');
+    // Yahoo Finance v7 quote endpoint (no API key needed)
+    const yUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbols}&lang=en&region=US&corsDomain=finance.yahoo.com`;
+    // CORS proxy fallback
+    const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(yUrl)}`;
+
+    let data;
+    // Try direct first, then proxy
+    try {
+      const r = await fetch(yUrl, { headers: { 'Accept': 'application/json' } });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      data = await r.json();
+    } catch (_) {
+      const r = await fetch(proxyUrl);
+      if (!r.ok) throw new Error(`Proxy HTTP ${r.status}`);
+      data = await r.json();
+    }
+
+    const results = data?.quoteResponse?.result;
+    if (!Array.isArray(results)) throw new Error('Unexpected API shape');
+    return results;
+  }
+
+  /* ── Format helpers ── */
+  function fmtPrice(price, symbol) {
+    if (symbol === 'BTC-USD') {
+      return '$' + Math.round(price).toLocaleString('en-US');
+    }
+    if (price >= 1000) return '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return '$' + price.toFixed(2);
+  }
+
+  function fmtChg(pct) {
+    const sign = pct >= 0 ? '+' : '';
+    return `${sign}${pct.toFixed(2)}%`;
+  }
+
+  /* ── Flash row on update ── */
+  function flashCell(priceEl, isUp) {
+    const cell = priceEl.closest('td');
+    if (!cell) return;
+    cell.classList.remove('flash-up', 'flash-dn');
+    // Force reflow
+    void cell.offsetWidth;
+    cell.classList.add(isUp ? 'flash-up' : 'flash-dn');
+  }
+
+  /* ── Apply quotes to DOM ── */
+  function applyQuotes(quotes) {
+    let updated = 0;
+    quotes.forEach(q => {
+      const sym = q.symbol;
+      const id  = SYMBOL_TO_ID[sym] || sym;
+
+      const priceEl = document.getElementById('price-' + id);
+      const chgEl   = document.getElementById('chg-'   + id);
+      if (!priceEl) return;
+
+      const price = q.regularMarketPrice;
+      const pct   = q.regularMarketChangePercent;
+
+      if (price != null) {
+        const oldText = priceEl.textContent;
+        const newText = fmtPrice(price, sym);
+        if (oldText !== newText) {
+          const wasUp = price > parseFloat(oldText.replace(/[$,]/g, ''));
+          priceEl.textContent = newText;
+          flashCell(priceEl, wasUp);
+        }
+        updated++;
+      }
+
+      if (chgEl && pct != null) {
+        chgEl.textContent = fmtChg(pct);
+        chgEl.className   = 'live-chg ' + (pct > 0 ? 'up' : pct < 0 ? 'dn' : '');
+      }
+    });
+    return updated;
+  }
+
+  /* ── Main refresh function ── */
+  window.refreshPrices = async function () {
+    const btn = $btn();
+    btn.disabled = true;
+    btn.textContent = '⟳  Fetching…';
+    $dot().className = 'status-dot loading';
+    $text().textContent = 'Fetching live prices…';
+
+    // Reset auto-refresh clock
+    clearTimeout(autoRefreshTimer);
+    nextRefreshAt = Date.now() + REFRESH_MS;
+
+    try {
+      const quotes  = await fetchQuotes();
+      const count   = applyQuotes(quotes);
+      const now     = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      $updated().textContent = `Updated ${timeStr}`;
+      $dot().className = 'status-dot ok';
+      $text().textContent = `${count} of ${SYMBOLS.length} prices refreshed`;
+    } catch (err) {
+      $dot().className = 'status-dot error';
+      $text().textContent = 'Could not reach price feed — retrying in 5 min';
+      console.error('[TLI dashboard]', err);
+      // Retry sooner on error
+      clearTimeout(autoRefreshTimer);
+      nextRefreshAt = Date.now() + 5 * 60 * 1000;
+    }
+
+    btn.disabled = false;
+    btn.textContent = '⟳  Refresh Now';
+
+    // Schedule next auto-refresh
+    autoRefreshTimer = setTimeout(window.refreshPrices, nextRefreshAt - Date.now());
+  };
+
+  /* ── Countdown ticker ── */
+  function updateCountdown() {
+    const ms = nextRefreshAt - Date.now();
+    if (ms <= 0) { $countdown().textContent = '…'; return; }
+    const h  = Math.floor(ms / 3_600_000);
+    const m  = Math.floor((ms % 3_600_000) / 60_000);
+    const s  = Math.floor((ms % 60_000) / 1_000);
+    $countdown().textContent =
+      `${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+  }
+
+  /* ── Boot ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    countdownTimer = setInterval(updateCountdown, 1000);
+    updateCountdown();
+    // Small delay so page paints first, then fetch
+    setTimeout(window.refreshPrices, 300);
+  });
+})();
+</script>
+</body>
+</html>
