@@ -113,6 +113,8 @@
     .price-cell  { display:flex; flex-direction:column; gap:2px; }
     .live-price  { color:#e2e8f0; font-weight:600; font-family:'SF Mono',monospace; font-size:13px; }
     .live-chg    { font-size:10px; font-family:'SF Mono',monospace; color:#475569; }
+    .price-link  { text-decoration:none; display:inline-block; }
+    .price-link:hover .live-price { color:#93c5fd; text-decoration:underline; text-underline-offset:3px; }
     .live-chg.up { color:#4ade80; }
     .live-chg.dn { color:#f87171; }
     .price-val   { font-family:'SF Mono','Fira Code',monospace; font-size:11px; color:#94a3b8; }
@@ -335,6 +337,7 @@
       <th>#</th>
       <th>Asset</th>
       <th>TLI Sentiment</th>
+      <th>Collection</th>
       <th>TLI Wave</th>
       <th>TLI Entry Point</th>
       <th>TLI LT Target</th>
@@ -343,7 +346,6 @@
       <th>Analyst</th>
       <th>Analyst Target</th>
       <th>Overall</th>
-      <th>Collection</th>
     </tr>
   </thead>
   <tbody>
@@ -355,150 +357,150 @@
       <td class="price-none">1</td>
       <td><div class="ticker" data-sym="BABA">$BABA</div><div class="company">Alibaba Group · NYSE ADR</div></td>
       <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td id="col-BABA"></td>
       <td><span class="wave wave-correct">Wave 4 (ABC)</span></td>
       <td class="price-val">~$94 (200 WMA zone)</td>
       <td class="price-val">$190</td>
       <td><span class="appr appr-huge">+102%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-BABA">$94.86</span><span class="live-chg" id="chg-BABA"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/BABA" target="_blank" rel="noopener" title="Open BABA on Yahoo Finance"><span class="live-price" id="price-BABA">$94.86</span></a><span class="live-chg" id="chg-BABA"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$190.23</td>
       <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
-      <td id="col-BABA"></td>
     </tr>
 
     <tr class="row-buy">
       <td class="price-none">2</td>
       <td><div class="ticker" data-sym="BIDU">$BIDU</div><div class="company">Baidu Inc · NASDAQ ADR</div></td>
       <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td id="col-BIDU"></td>
       <td><span class="wave wave-correct">Wave 2 (ABC)</span></td>
       <td class="price-val">$105–$107 (load the boat)</td>
       <td class="price-val">$200</td>
       <td><span class="appr appr-high">+89%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-BIDU">$112.02</span><span class="live-chg" id="chg-BIDU"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/BIDU" target="_blank" rel="noopener" title="Open BIDU on Yahoo Finance"><span class="live-price" id="price-BIDU">$112.02</span></a><span class="live-chg" id="chg-BIDU"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$154.38</td>
       <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
-      <td id="col-BIDU"></td>
     </tr>
 
     <tr class="row-buy">
       <td class="price-none">3</td>
       <td><div class="ticker" data-sym="ZETA">$ZETA</div><div class="company">Zeta Global Holdings · NYSE</div></td>
       <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td id="col-ZETA"></td>
       <td><span class="wave wave-correct">Wave 2</span></td>
       <td class="price-val">$18.83 (0.618 Fib)</td>
       <td class="price-val">$37</td>
       <td><span class="appr appr-huge">+97%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-ZETA">$19.93</span><span class="live-chg" id="chg-ZETA"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/ZETA" target="_blank" rel="noopener" title="Open ZETA on Yahoo Finance"><span class="live-price" id="price-ZETA">$19.93</span></a><span class="live-chg" id="chg-ZETA"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$28.31</td>
       <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
-      <td id="col-ZETA"></td>
     </tr>
 
     <tr class="row-buy">
       <td class="price-none">4</td>
       <td><div class="ticker" data-sym="WYFI">$WYFI</div><div class="company">WhiteFiber Inc · NASDAQ</div></td>
       <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td id="col-WYFI"></td>
       <td><span class="wave wave-impulse">Wave 1</span></td>
       <td class="price-val">$33.60 (BUY ALERT)</td>
       <td class="price-val">$58</td>
       <td><span class="appr appr-high">+73%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-WYFI">$36.00</span><span class="live-chg" id="chg-WYFI"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/WYFI" target="_blank" rel="noopener" title="Open WYFI on Yahoo Finance"><span class="live-price" id="price-WYFI">$36.00</span></a><span class="live-chg" id="chg-WYFI"></span></div></td>
       <td class="analyst-buy">Buy</td>
       <td class="price-val">$34.60</td>
       <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
-      <td id="col-WYFI"></td>
     </tr>
 
     <tr class="row-buy">
       <td class="price-none">5</td>
       <td><div class="ticker" data-sym="GRRR">$GRRR</div><div class="company">Gorilla Technology · NASDAQ</div></td>
       <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td id="col-GRRR"></td>
       <td><span class="wave wave-correct">Wave 2 (ABC)</span></td>
       <td class="price-val">$18 (0.618 Fib retest)</td>
       <td class="price-val">$30</td>
       <td><span class="appr appr-high">+67%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-GRRR">$18.80</span><span class="live-chg" id="chg-GRRR"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/GRRR" target="_blank" rel="noopener" title="Open GRRR on Yahoo Finance"><span class="live-price" id="price-GRRR">$18.80</span></a><span class="live-chg" id="chg-GRRR"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$36.67</td>
       <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
-      <td id="col-GRRR"></td>
     </tr>
 
     <tr class="row-buy">
       <td class="price-none">6</td>
       <td><div class="ticker" data-sym="SE">$SE</div><div class="company">Sea Limited · NYSE ADR</div></td>
       <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td id="col-SE"></td>
       <td><span class="wave wave-correct">Wave 2</span></td>
       <td class="price-val">~$85 (200 WMA)</td>
       <td class="price-val">$140</td>
       <td><span class="appr appr-high">+65%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-SE">$92.30</span><span class="live-chg" id="chg-SE"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/SE" target="_blank" rel="noopener" title="Open SE on Yahoo Finance"><span class="live-price" id="price-SE">$92.30</span></a><span class="live-chg" id="chg-SE"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$140.50</td>
       <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
-      <td id="col-SE"></td>
     </tr>
 
     <tr class="row-buy">
       <td class="price-none">7</td>
       <td><div class="ticker" data-sym="ADUR">$ADUR</div><div class="company">Aduro Clean Technologies · NASDAQ</div></td>
       <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td id="col-ADUR"></td>
       <td><span class="wave wave-correct">Accumulation</span></td>
       <td class="price-val">~$15 (accumulation zone)</td>
       <td class="price-val">$27–$34</td>
       <td><span class="appr appr-huge">+100%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-ADUR">$15.26</span><span class="live-chg" id="chg-ADUR"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/ADUR" target="_blank" rel="noopener" title="Open ADUR on Yahoo Finance"><span class="live-price" id="price-ADUR">$15.26</span></a><span class="live-chg" id="chg-ADUR"></span></div></td>
       <td class="analyst-mod-buy">Moderate Buy</td>
       <td class="price-val">$29.00</td>
       <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
-      <td id="col-ADUR"></td>
     </tr>
 
     <tr class="row-buy">
       <td class="price-none">8</td>
       <td><div class="ticker" data-sym="BTC">$BTC</div><div class="company">Bitcoin · Cryptocurrency</div></td>
       <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td id="col-BTC"></td>
       <td><span class="wave wave-correct">ABC Correction</span></td>
       <td class="price-val">≤ 200 WMA (~$73K)</td>
       <td class="price-val">$180,000</td>
       <td><span class="appr appr-huge">+147%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-BTC">$59,188</span><span class="live-chg" id="chg-BTC"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/BTC-USD" target="_blank" rel="noopener" title="Open BTC-USD on Yahoo Finance"><span class="live-price" id="price-BTC">$59,188</span></a><span class="live-chg" id="chg-BTC"></span></div></td>
       <td class="analyst-bullish">Bullish</td>
       <td class="price-val">$100K–$180K</td>
       <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
-      <td id="col-BTC"></td>
     </tr>
 
     <tr>
       <td class="price-none">9</td>
       <td><div class="ticker" data-sym="EBAY">$EBAY</div><div class="company">eBay Inc · NASDAQ</div></td>
       <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td id="col-EBAY"></td>
       <td><span class="wave wave-impulse">Wave 3</span></td>
       <td class="price-val">~$110 (current)</td>
       <td class="price-val">$180</td>
       <td><span class="appr appr-high">+64%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-EBAY">$110.80</span><span class="live-chg" id="chg-EBAY"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/EBAY" target="_blank" rel="noopener" title="Open EBAY on Yahoo Finance"><span class="live-price" id="price-EBAY">$110.80</span></a><span class="live-chg" id="chg-EBAY"></span></div></td>
       <td class="analyst-hold">Hold</td>
       <td class="price-val">$108.13</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-EBAY"></td>
     </tr>
 
     <tr>
       <td class="price-none">10</td>
       <td><div class="ticker" data-sym="HIMS">$HIMS</div><div class="company">Hims &amp; Hers Health · NYSE</div></td>
       <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td id="col-HIMS"></td>
       <td><span class="wave wave-impulse">Wave 3</span></td>
       <td class="price-val">~$33 (current)</td>
       <td class="price-val">$41–$55</td>
       <td><span class="appr appr-med">+45%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-HIMS">$32.81</span><span class="live-chg" id="chg-HIMS"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/HIMS" target="_blank" rel="noopener" title="Open HIMS on Yahoo Finance"><span class="live-price" id="price-HIMS">$32.81</span></a><span class="live-chg" id="chg-HIMS"></span></div></td>
       <td class="analyst-hold">Hold</td>
       <td class="price-val">$27.32</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-HIMS"></td>
     </tr>
 
     <!-- NEW: Silver -->
@@ -506,15 +508,15 @@
       <td class="price-none">11</td>
       <td><div class="ticker" data-sym="SLV">$SLV</div><div class="company">iShares Silver Trust (Silver) · NYSE</div></td>
       <td><span class="badge badge-buy-now">Buy Now</span></td>
+      <td id="col-SLV"></td>
       <td><span class="wave wave-correct">Wave 2 (ABC)</span></td>
       <td class="price-val">~$28.50 (0.618 Fib / 200 WMA)</td>
       <td class="price-val">$45</td>
       <td><span class="appr appr-high">+58%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-SLV">$33.15</span><span class="live-chg" id="chg-SLV"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/SLV" target="_blank" rel="noopener" title="Open SLV on Yahoo Finance"><span class="live-price" id="price-SLV">$33.15</span></a><span class="live-chg" id="chg-SLV"></span></div></td>
       <td class="analyst-bullish">Bullish</td>
       <td class="price-val">$40–$50</td>
       <td><span class="rec-buy"><span class="dot-buy"></span>BUY</span></td>
-      <td id="col-SLV"></td>
     </tr>
 
     <!-- ═══ SECTION 2: TRENDING TO BUY POINT ═══ -->
@@ -524,75 +526,75 @@
       <td class="price-none">12</td>
       <td><div class="ticker" data-sym="GOOG">$GOOG</div><div class="company">Alphabet Inc Class C · NASDAQ</div></td>
       <td><span class="badge badge-trending-buy">Trending to Buy</span></td>
+      <td id="col-GOOG"></td>
       <td><span class="wave wave-correct">Wave 4</span></td>
       <td class="price-val">$351 (2.618 Fib) ⚡</td>
       <td class="price-val">$453 (3.618 Fib)</td>
       <td><span class="appr appr-low">+29%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-GOOG">$351.00</span><span class="live-chg" id="chg-GOOG"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/GOOG" target="_blank" rel="noopener" title="Open GOOG on Yahoo Finance"><span class="live-price" id="price-GOOG">$351.00</span></a><span class="live-chg" id="chg-GOOG"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$426.62</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-GOOG"></td>
     </tr>
 
     <tr>
       <td class="price-none">13</td>
       <td><div class="ticker" data-sym="AMZN">$AMZN</div><div class="company">Amazon.com Inc · NASDAQ</div></td>
       <td><span class="badge badge-trending-buy">Trending to Buy</span></td>
+      <td id="col-AMZN"></td>
       <td><span class="wave wave-correct">Wave 4</span></td>
       <td class="price-val">$231 (50 WMA)</td>
       <td class="price-val">$290 (2.618 Fib)</td>
       <td><span class="appr appr-low">+26%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-AMZN">$240.45</span><span class="live-chg" id="chg-AMZN"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/AMZN" target="_blank" rel="noopener" title="Open AMZN on Yahoo Finance"><span class="live-price" id="price-AMZN">$240.45</span></a><span class="live-chg" id="chg-AMZN"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$312.99</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-AMZN"></td>
     </tr>
 
     <tr>
       <td class="price-none">14</td>
       <td><div class="ticker" data-sym="AAPL">$AAPL</div><div class="company">Apple Inc · NASDAQ</div></td>
       <td><span class="badge badge-trending-buy">Trending to Buy</span></td>
+      <td id="col-AAPL"></td>
       <td><span class="wave wave-correct">Wave 4</span></td>
       <td class="price-val">$260 (50 WMA)</td>
       <td class="price-val">~$400 (Wave 5 ext.)</td>
       <td><span class="appr appr-med">+54%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-AAPL">$280.93</span><span class="live-chg" id="chg-AAPL"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/AAPL" target="_blank" rel="noopener" title="Open AAPL on Yahoo Finance"><span class="live-price" id="price-AAPL">$280.93</span></a><span class="live-chg" id="chg-AAPL"></span></div></td>
       <td class="analyst-buy">Buy</td>
       <td class="price-val">$315.09</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-AAPL"></td>
     </tr>
 
     <tr>
       <td class="price-none">15</td>
       <td><div class="ticker" data-sym="MSFT">$MSFT</div><div class="company">Microsoft Corp · NASDAQ</div></td>
       <td><span class="badge badge-trending-buy">Trending to Buy</span></td>
+      <td id="col-MSFT"></td>
       <td><span class="wave wave-correct">Wave C</span></td>
       <td class="price-val">$344 (0.5 Fib)</td>
       <td class="price-val">$450+ (first: $386)</td>
       <td><span class="appr appr-med">+31%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-MSFT">$370.24</span><span class="live-chg" id="chg-MSFT"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/MSFT" target="_blank" rel="noopener" title="Open MSFT on Yahoo Finance"><span class="live-price" id="price-MSFT">$370.24</span></a><span class="live-chg" id="chg-MSFT"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$561.11</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-MSFT"></td>
     </tr>
 
     <tr>
       <td class="price-none">16</td>
       <td><div class="ticker" data-sym="SHOP">$SHOP</div><div class="company">Shopify Inc Class A · NASDAQ</div></td>
       <td><span class="badge badge-trending-buy">Trending to Buy</span></td>
+      <td id="col-SHOP"></td>
       <td><span class="wave wave-correct">Wave 4</span></td>
       <td class="price-val">$113 (0.618 Fib)</td>
       <td class="price-val">$227 (2.618 Fib)</td>
       <td><span class="appr appr-huge">+101%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-SHOP">$114.25</span><span class="live-chg" id="chg-SHOP"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/SHOP" target="_blank" rel="noopener" title="Open SHOP on Yahoo Finance"><span class="live-price" id="price-SHOP">$114.25</span></a><span class="live-chg" id="chg-SHOP"></span></div></td>
       <td class="analyst-buy">Buy</td>
       <td class="price-val">$148.22</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-SHOP"></td>
     </tr>
 
     <!-- PLTR: sentiment changed from Buy Now → Trending to Buy -->
@@ -600,30 +602,30 @@
       <td class="price-none">17</td>
       <td><div class="ticker" data-sym="PLTR">$PLTR</div><div class="company">Palantir Technologies · NASDAQ</div></td>
       <td><span class="badge badge-trending-buy">Trending to Buy</span><span class="sentiment-changed-indicator">↕ was Buy Now</span></td>
+      <td id="col-PLTR"></td>
       <td><span class="wave wave-top">Post Wave 3</span></td>
       <td class="price-val">$85 (0.618 Fib pullback)</td>
       <td class="price-val">$180</td>
       <td><span class="appr appr-huge">+112%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-PLTR">$116.26</span><span class="live-chg" id="chg-PLTR"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/PLTR" target="_blank" rel="noopener" title="Open PLTR on Yahoo Finance"><span class="live-price" id="price-PLTR">$116.26</span></a><span class="live-chg" id="chg-PLTR"></span></div></td>
       <td class="analyst-buy">Buy</td>
       <td class="price-val">$182.75</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-PLTR"></td>
     </tr>
 
     <tr>
       <td class="price-none">18</td>
       <td><div class="ticker" data-sym="SIDU">$SIDU</div><div class="company">Sidus Space Inc · NASDAQ</div></td>
       <td><span class="badge badge-trending-buy">Trending to Buy</span></td>
+      <td id="col-SIDU"></td>
       <td><span class="wave wave-correct">Wave 4</span></td>
       <td class="price-val">$2.44 (0.618 Fib / 200 DMA)</td>
       <td class="price-val">$9.55 (1.618 Fib)</td>
       <td><span class="appr appr-huge">+291%</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-SIDU">$2.87</span><span class="live-chg" id="chg-SIDU"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/SIDU" target="_blank" rel="noopener" title="Open SIDU on Yahoo Finance"><span class="live-price" id="price-SIDU">$2.87</span></a><span class="live-chg" id="chg-SIDU"></span></div></td>
       <td class="analyst-none">No Coverage</td>
       <td class="price-none">—</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-SIDU"></td>
     </tr>
 
     <!-- ═══ SECTION 3: TRENDING NEGATIVELY ═══ -->
@@ -633,30 +635,30 @@
       <td class="price-none">19</td>
       <td><div class="ticker" data-sym="TSLA">$TSLA</div><div class="company">Tesla Inc · NASDAQ</div></td>
       <td><span class="badge badge-trending-neg">Trending Neg.</span></td>
+      <td id="col-TSLA"></td>
       <td><span class="wave wave-bear">Wave 4 ↓</span></td>
       <td class="price-none">— (watch $300 / 0.5 Fib)</td>
       <td class="price-val">$754 (LT Wave 5)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-TSLA">$407.77</span><span class="live-chg" id="chg-TSLA"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/TSLA" target="_blank" rel="noopener" title="Open TSLA on Yahoo Finance"><span class="live-price" id="price-TSLA">$407.77</span></a><span class="live-chg" id="chg-TSLA"></span></div></td>
       <td class="analyst-buy">Buy</td>
       <td class="price-val">$421.16</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-TSLA"></td>
     </tr>
 
     <tr>
       <td class="price-none">20</td>
       <td><div class="ticker" data-sym="NIO">$NIO</div><div class="company">NIO Inc · NYSE ADR</div></td>
       <td><span class="badge badge-trending-neg">Trending Neg.</span></td>
+      <td id="col-NIO"></td>
       <td><span class="wave wave-bear">Wave 2 ↓</span></td>
       <td class="price-none">— (watch Feb lows ~$4.30)</td>
       <td class="price-val">$12 (Wave 3 if holds)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-NIO">$4.94</span><span class="live-chg" id="chg-NIO"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/NIO" target="_blank" rel="noopener" title="Open NIO on Yahoo Finance"><span class="live-price" id="price-NIO">$4.94</span></a><span class="live-chg" id="chg-NIO"></span></div></td>
       <td class="analyst-buy">Buy</td>
       <td class="price-val">$7.23</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-NIO"></td>
     </tr>
 
     <!-- NKE: sentiment changed from Appreciating → Trending Neg -->
@@ -664,15 +666,15 @@
       <td class="price-none">21</td>
       <td><div class="ticker" data-sym="NKE">$NKE</div><div class="company">Nike Inc Class B · NYSE</div></td>
       <td><span class="badge badge-trending-neg">Trending Neg.</span><span class="sentiment-changed-indicator">↕ was Appreciating</span></td>
+      <td id="col-NKE"></td>
       <td><span class="wave wave-bear">Wave C ↓</span></td>
       <td class="price-none">— (watch 0.78 Fib ~$39)</td>
       <td class="price-none">— (pending earnings)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-NKE">$41.51</span><span class="live-chg" id="chg-NKE"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/NKE" target="_blank" rel="noopener" title="Open NKE on Yahoo Finance"><span class="live-price" id="price-NKE">$41.51</span></a><span class="live-chg" id="chg-NKE"></span></div></td>
       <td class="analyst-buy">Buy</td>
       <td class="price-val">$55.38</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-NKE"></td>
     </tr>
 
     <!-- NEW: Palladium — sentiment changed from Appreciating → Trending Neg -->
@@ -680,15 +682,15 @@
       <td class="price-none">22</td>
       <td><div class="ticker" data-sym="PALL">$PALL</div><div class="company">abrdn Physical Palladium ETF · NYSE</div></td>
       <td><span class="badge badge-trending-neg">Trending Neg.</span><span class="sentiment-changed-indicator">↕ was Appreciating</span></td>
+      <td id="col-PALL"></td>
       <td><span class="wave wave-bear">Wave C ↓</span></td>
       <td class="price-none">— (watch ~$78 / 0.78 Fib)</td>
       <td class="price-none">— (pending support confirmation)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-PALL">$93.80</span><span class="live-chg" id="chg-PALL"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/PALL" target="_blank" rel="noopener" title="Open PALL on Yahoo Finance"><span class="live-price" id="price-PALL">$93.80</span></a><span class="live-chg" id="chg-PALL"></span></div></td>
       <td class="analyst-none">No Coverage</td>
       <td class="price-none">—</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-PALL"></td>
     </tr>
 
     <!-- ═══ SECTION 4: APPRECIATING — DON'T BUY ═══ -->
@@ -698,105 +700,105 @@
       <td class="price-none">23</td>
       <td><div class="ticker" data-sym="AMD">$AMD</div><div class="company">Advanced Micro Devices · NASDAQ</div></td>
       <td><span class="badge badge-appreciating">Appreciating</span></td>
+      <td id="col-AMD"></td>
       <td><span class="wave wave-top">Wave 4 → 5</span></td>
       <td class="price-none">— (wait Wave 4 pullback)</td>
       <td class="price-val">$686 (Wave 5 ext.)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-AMD">$538.59</span><span class="live-chg" id="chg-AMD"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/AMD" target="_blank" rel="noopener" title="Open AMD on Yahoo Finance"><span class="live-price" id="price-AMD">$538.59</span></a><span class="live-chg" id="chg-AMD"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$500.40</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-AMD"></td>
     </tr>
 
     <tr>
       <td class="price-none">24</td>
       <td><div class="ticker" data-sym="ASTS">$ASTS</div><div class="company">AST SpaceMobile · NASDAQ</div></td>
       <td><span class="badge badge-appreciating">Appreciating</span></td>
+      <td id="col-ASTS"></td>
       <td><span class="wave wave-impulse">Wave 3 ↑</span></td>
       <td class="price-none">— (in Wave 3, missed entry)</td>
       <td class="price-val">~$640 (Wave 3 ext.)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-ASTS">$88.14</span><span class="live-chg" id="chg-ASTS"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/ASTS" target="_blank" rel="noopener" title="Open ASTS on Yahoo Finance"><span class="live-price" id="price-ASTS">$88.14</span></a><span class="live-chg" id="chg-ASTS"></span></div></td>
       <td class="analyst-hold">Hold</td>
       <td class="price-val">$81.47</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-ASTS"></td>
     </tr>
 
     <tr>
       <td class="price-none">25</td>
       <td><div class="ticker" data-sym="ABCL">$ABCL</div><div class="company">AbCellera Biologics · NASDAQ</div></td>
       <td><span class="badge badge-appreciating">Appreciating</span></td>
+      <td id="col-ABCL"></td>
       <td><span class="wave wave-impulse">Wave 3 ↑</span></td>
       <td class="price-none">— (in Wave 3, missed entry)</td>
       <td class="price-val">$10.18 (1.618 Fib)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-ABCL">$8.49</span><span class="live-chg" id="chg-ABCL"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/ABCL" target="_blank" rel="noopener" title="Open ABCL on Yahoo Finance"><span class="live-price" id="price-ABCL">$8.49</span></a><span class="live-chg" id="chg-ABCL"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$8.40</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-ABCL"></td>
     </tr>
 
     <tr>
       <td class="price-none">26</td>
       <td><div class="ticker" data-sym="DCTH">$DCTH</div><div class="company">Delcath Systems · NASDAQ</div></td>
       <td><span class="badge badge-appreciating">Appreciating</span></td>
+      <td id="col-DCTH"></td>
       <td><span class="wave wave-top">Wave 3 top</span></td>
       <td class="price-none">— (wait Wave 4 pullback)</td>
       <td class="price-val">~$22 (1.618 Fib)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-DCTH">$12.95</span><span class="live-chg" id="chg-DCTH"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/DCTH" target="_blank" rel="noopener" title="Open DCTH on Yahoo Finance"><span class="live-price" id="price-DCTH">$12.95</span></a><span class="live-chg" id="chg-DCTH"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$22.00</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-DCTH"></td>
     </tr>
 
     <tr>
       <td class="price-none">27</td>
       <td><div class="ticker" data-sym="OSCR">$OSCR</div><div class="company">Oscar Health Inc · NYSE</div></td>
       <td><span class="badge badge-appreciating">Appreciating</span></td>
+      <td id="col-OSCR"></td>
       <td><span class="wave wave-top">Pre Wave 2</span></td>
       <td class="price-none">— (wait Wave 2 pullback)</td>
       <td class="price-none">— (higher highs expected)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-OSCR">$29.38</span><span class="live-chg" id="chg-OSCR"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/OSCR" target="_blank" rel="noopener" title="Open OSCR on Yahoo Finance"><span class="live-price" id="price-OSCR">$29.38</span></a><span class="live-chg" id="chg-OSCR"></span></div></td>
       <td class="analyst-hold">Hold</td>
       <td class="price-val">$22.60</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-OSCR"></td>
     </tr>
 
     <tr>
       <td class="price-none">28</td>
       <td><div class="ticker" data-sym="UNH">$UNH</div><div class="company">UnitedHealth Group · NYSE</div></td>
       <td><span class="badge badge-appreciating">Appreciating</span></td>
+      <td id="col-UNH"></td>
       <td><span class="wave wave-impulse">Wave 1 ↑</span></td>
       <td class="price-none">— (wait Wave 2 after $446–$460)</td>
       <td class="price-val">$446–$460 (Wave 1 top)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-UNH">$419.82</span><span class="live-chg" id="chg-UNH"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/UNH" target="_blank" rel="noopener" title="Open UNH on Yahoo Finance"><span class="live-price" id="price-UNH">$419.82</span></a><span class="live-chg" id="chg-UNH"></span></div></td>
       <td class="analyst-buy">Buy</td>
       <td class="price-val">$411.31</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-UNH"></td>
     </tr>
 
     <tr>
       <td class="price-none">29</td>
       <td><div class="ticker" data-sym="V">$V</div><div class="company">Visa Inc Class A · NYSE</div></td>
       <td><span class="badge badge-appreciating">Appreciating</span></td>
+      <td id="col-V"></td>
       <td><span class="wave wave-top">Wave 5</span></td>
       <td class="price-none">— (in Wave 5, extended)</td>
       <td class="price-val">$411 (2.0 Fib)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-V">$342.52</span><span class="live-chg" id="chg-V"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/V" target="_blank" rel="noopener" title="Open V on Yahoo Finance"><span class="live-price" id="price-V">$342.52</span></a><span class="live-chg" id="chg-V"></span></div></td>
       <td class="analyst-strong-buy">Strong Buy</td>
       <td class="price-val">$398.83</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-V"></td>
     </tr>
 
     <!-- NEW: Rolls-Royce — sentiment changed from Trending to Buy → Appreciating -->
@@ -804,15 +806,15 @@
       <td class="price-none">30</td>
       <td><div class="ticker" data-sym="RYCEY">$RR</div><div class="company">Rolls-Royce Holdings plc · OTC ADR</div></td>
       <td><span class="badge badge-appreciating">Appreciating</span><span class="sentiment-changed-indicator">↕ was Trending to Buy</span></td>
+      <td id="col-RYCEY"></td>
       <td><span class="wave wave-impulse">Wave 3 ↑</span></td>
       <td class="price-none">— (in Wave 3, entry missed ~$2.80)</td>
       <td class="price-val">~$12 (1.618 Fib)</td>
       <td><span class="appr appr-none">—</span></td>
-      <td><div class="price-cell"><span class="live-price" id="price-RYCEY">$7.45</span><span class="live-chg" id="chg-RYCEY"></span></div></td>
+      <td><div class="price-cell"><a class="price-link" href="https://finance.yahoo.com/quote/RYCEY" target="_blank" rel="noopener" title="Open RYCEY on Yahoo Finance"><span class="live-price" id="price-RYCEY">$7.45</span></a><span class="live-chg" id="chg-RYCEY"></span></div></td>
       <td class="analyst-buy">Buy</td>
       <td class="price-val">$9.50</td>
       <td><span class="rec-wait"><span class="dot-wait"></span>WAIT</span></td>
-      <td id="col-RYCEY"></td>
     </tr>
 
   </tbody>
@@ -1515,7 +1517,7 @@
         <td>${apprHtml}</td>
         <td>
           <div class="price-cell">
-            <span class="live-price">${livePrice}</span>
+            <a class="price-link" href="https://finance.yahoo.com/quote/${sym === 'BTC' ? 'BTC-USD' : sym}" target="_blank" rel="noopener" title="Open on Yahoo Finance"><span class="live-price">${livePrice}</span></a>
             <span class="live-chg ${chgCls}">${liveChg}</span>
           </div>
         </td>
@@ -1636,23 +1638,58 @@
   const $updated   = () => document.getElementById('last-updated');
   const $countdown = () => document.getElementById('countdown');
 
-  async function fetchQuotes() {
-    const syms  = SYMBOLS.join(',');
-    const yUrl  = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${syms}&lang=en&region=US&corsDomain=finance.yahoo.com`;
-    const proxy = `https://corsproxy.io/?url=${encodeURIComponent(yUrl)}`;
-    let data;
-    try {
-      const r = await fetch(yUrl, { headers: { Accept: 'application/json' } });
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      data = await r.json();
-    } catch (_) {
-      const r = await fetch(proxy);
-      if (!r.ok) throw new Error('Proxy HTTP ' + r.status);
-      data = await r.json();
+  // Yahoo's v8 chart endpoint needs no crumb/cookie (unlike the old v7 quote
+  // endpoint, which now 401s). We route through a chain of CORS proxies so it
+  // also works when index.html is opened directly from disk (file://).
+  const CHART_BASE = 'https://query1.finance.yahoo.com/v8/finance/chart/';
+  const PROXIES = [
+    url => url,                                                                    // direct (works when served from a web host)
+    url => 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(url),  // reliable free CORS proxy
+    url => 'https://api.allorigins.win/raw?url='       + encodeURIComponent(url),
+    url => 'https://corsproxy.io/?url='                + encodeURIComponent(url),
+    url => 'https://thingproxy.freeboard.io/fetch/'    + url,
+  ];
+  let preferredProxy = 0;   // remember the first proxy that works, try it first next time
+
+  async function fetchViaProxies(url) {
+    const order = [preferredProxy, ...PROXIES.map((_, i) => i).filter(i => i !== preferredProxy)];
+    let lastErr;
+    for (const idx of order) {
+      try {
+        const r = await fetch(PROXIES[idx](url), { headers: { Accept: 'application/json' } });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json();
+        if (!j || !j.chart || !j.chart.result || !j.chart.result[0] || !j.chart.result[0].meta) {
+          throw new Error('unexpected shape');
+        }
+        preferredProxy = idx;
+        return j;
+      } catch (e) { lastErr = e; }
     }
-    const results = data?.quoteResponse?.result;
-    if (!Array.isArray(results)) throw new Error('Unexpected API shape');
-    return results;
+    throw lastErr || new Error('all sources failed');
+  }
+
+  async function fetchOne(sym) {
+    const url = `${CHART_BASE}${encodeURIComponent(sym)}?interval=1d&range=1d`;
+    const meta = (await fetchViaProxies(url)).chart.result[0].meta;
+    const price = meta.regularMarketPrice;
+    const prev  = (meta.chartPreviousClose != null) ? meta.chartPreviousClose : meta.previousClose;
+    const pct   = (price != null && prev) ? ((price - prev) / prev) * 100 : null;
+    return { symbol: sym, regularMarketPrice: price, regularMarketChangePercent: pct };
+  }
+
+  // Fetch all symbols, throttled in small chunks so we don't hammer the proxy.
+  async function fetchQuotes() {
+    const out = [];
+    const CHUNK = 5;
+    for (let i = 0; i < SYMBOLS.length; i += CHUNK) {
+      const settled = await Promise.allSettled(SYMBOLS.slice(i, i + CHUNK).map(fetchOne));
+      settled.forEach(s => {
+        if (s.status === 'fulfilled' && s.value.regularMarketPrice != null) out.push(s.value);
+      });
+    }
+    if (!out.length) throw new Error('all sources blocked');
+    return out;
   }
 
   function fmtPrice(p, sym) {
@@ -1713,7 +1750,7 @@
       const upd    = $updated();
       if (upd) upd.textContent = ts;
       if (dot) dot.className = 'status-dot ok';
-      if (txt) txt.textContent = `${n} prices updated`;
+      if (txt) txt.textContent = `${n} of ${SYMBOLS.length} live prices updated`;
       clearTimeout(autoRefreshTimer);
       nextRefreshAt    = Date.now() + REFRESH_MS;
       autoRefreshTimer = setTimeout(refreshPrices, REFRESH_MS);
